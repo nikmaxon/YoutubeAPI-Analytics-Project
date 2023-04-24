@@ -14,6 +14,27 @@ class Channel:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
 
+    def __str__(self):
+        return f'{self.title}({self.url})'
+
+    def __add__(self, other):
+        return int(self.subs) + int(other.subs)
+
+    def __sub__(self, other):
+        return int(self.subs) - int(other.subs)
+
+    def __gt__(self, other):
+        return int(self.subs) > int(other.subs)
+
+    def __ge__(self, other):
+        return int(self.subs) >= int(other.subs)
+
+    def __lt__(self, other):
+        return int(self.subs) < int(other.subs)
+
+    def __le__(self, other):
+        return int(self.subs) <= int(other.subs)
+
     @classmethod
     def get_service(cls):
         return build('youtube', 'v3', developerKey=cls.api_key)
@@ -49,7 +70,7 @@ class Channel:
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
         channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
-        #print(json.dumps(channel, indent=2, ensure_ascii=False))
+        # print(json.dumps(channel, indent=2, ensure_ascii=False))
         return channel
 
     def to_json(self, filename):
@@ -62,6 +83,5 @@ class Channel:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(channel_dict, f, indent=2, ensure_ascii=False)
 
-
-#vdud = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
-#vdud.to_json('vdud.json')
+# vdud = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
+# vdud.to_json('vdud.json')
